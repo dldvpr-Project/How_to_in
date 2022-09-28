@@ -2,26 +2,23 @@
 
 namespace App\Form;
 
-use App\Entity\Definition;
+use App\Entity\Language;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SearchBarType extends AbstractType
+class LanguageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('How to in', SearchType::class, ['required' => false, 'label' => false])
-            ->setMethod('POST')
-        ;
+            ->add('label');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Definition::class,
+            'data_class' => Language::class,
         ]);
     }
 }
