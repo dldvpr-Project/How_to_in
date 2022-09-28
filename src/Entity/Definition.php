@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\DefinitionRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Type;
 
 #[ORM\Entity(repositoryClass: DefinitionRepository::class)]
 class Definition
@@ -16,7 +18,7 @@ class Definition
     #[ORM\Column]
     private ?string $title = null;
 
-    #[ORM\Column]
+    #[ORM\Column, Type(Types::TEXT)]
     private ?string $body = null;
 
     #[ORM\ManyToOne(inversedBy: 'definitions')]
@@ -40,7 +42,7 @@ class Definition
     }
 
     /**
-     * @return string|null
+     * @return text|null
      */
     public function getBody(): ?string
     {
@@ -48,9 +50,9 @@ class Definition
     }
 
     /**
-     * @param string|null $body
+     * @param text|null $body
      */
-    public function setBody(?string $body): void
+    public function setBody(?text $body): void
     {
         $this->body = $body;
     }
