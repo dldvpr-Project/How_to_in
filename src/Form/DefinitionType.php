@@ -39,7 +39,6 @@ class DefinitionType extends AbstractType
             ])
             ->add('language', ChoiceType::class, [
                 'expanded' => true,
-
             ])
         ;
     }

@@ -6,6 +6,7 @@ use App\Repository\LanguageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
@@ -18,6 +19,14 @@ class Language
 
     #[ORM\Column(length: 255)]
     private ?string $label = null;
+
+    #[ORM\Column(type: 'string')]
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: ['application/pdf', 'application/x-pdf'],
+        mimeTypesMessage: 'Please upload a valid PDF',
+    )]
+    private ?string $picture=null;
 
     #[ORM\OneToMany(mappedBy: 'language', targetEntity: Definition::class, orphanRemoval: true)]
     private Collection $definitions;
@@ -72,5 +81,22 @@ class Language
         }
 
         return $this;
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param string|null $picture
+     */
+    public function setPicture(?string $picture): void
+    {
+        $this->picture = $picture;
     }
 }

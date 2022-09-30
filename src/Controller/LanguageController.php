@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
-use Psr\Container\ContainerInterface;
+use App\Repository\LanguageRepository;
+use App\Entity\Language;
+use App\Form\LanguageType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Service\FileUploader;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,11 +23,31 @@ class LanguageController extends AbstractController
         ]);
     }
 
-    #[Route('/add', name: 'name', methods: ['GET', 'POST'])]
-    public function addLanguage(): Response
+    #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
+    public function addDefinition(
+        LanguageRepository $languageRepository,
+        Request            $request,
+        FileUploader       $fileUploader
+    ): Response
     {
+        $language = new language();
+        $form = $this->createForm(LanguageType::class, $language);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $imgFile */
+            $imgFile = $form->get('picture')->getData();
+            if ($imgFile) {
+                $imgFileName = $fileUploader->upload($imgFile);
+                $language->setPicture($imgFileName);
+            }
+            $languageRepository->save($language, true);
+            return $this->redirectToRoute('app_home');
+        }
 
-        return $this->renderForm()
+        return $this->renderForm('language/new.html.twig', [
+            'form' => $form,
+            'langue' => $language
+        ]);
     }
 }
