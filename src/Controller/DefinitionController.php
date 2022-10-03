@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\DefinitionRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,7 @@ class DefinitionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $definitionRepository->save($definition, true);
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_home', [], Response::HTTP_CREATED);
         }
 
         return $this->renderForm('definition/new.html.twig', [
@@ -42,4 +43,18 @@ class DefinitionController extends AbstractController
             'definition' => $definition
         ]);
     }
+
+    #[Route('/(id)', name: 'delete', methods: ['POST'])]
+    public function deleteDefinition(Request $request, DefinitionRepository $definitionRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $definition->getId(), $request->request->get('_token'))) {
+            $definitionRepository->remove($definition, true);
+        } else {
+            throw new \RuntimeException('Impossible de supprimer la definition.');
+        }
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+
 }

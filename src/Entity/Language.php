@@ -23,8 +23,8 @@ class Language
     #[ORM\Column(type: 'string')]
     #[Assert\File(
         maxSize: '2M',
-        mimeTypes: ['application/pdf', 'application/x-pdf'],
-        mimeTypesMessage: 'Please upload a valid PDF',
+        mimeTypes: ['image/jpeg', 'image/png'],
+        mimeTypesMessage: 'Please upload a valid image.',
     )]
     private ?string $picture=null;
 

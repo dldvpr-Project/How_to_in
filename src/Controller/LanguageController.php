@@ -42,7 +42,7 @@ class LanguageController extends AbstractController
                 $language->setPicture($imgFileName);
             }
             $languageRepository->save($language, true);
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_home', [], Response::HTTP_CREATED);
         }
 
         return $this->renderForm('language/new.html.twig', [
