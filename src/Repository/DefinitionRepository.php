@@ -6,6 +6,14 @@ use App\Entity\Definition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Definition>
+ *
+ * @method Definition|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Definition|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Definition[]    findAll()
+ * @method Definition[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class DefinitionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -32,24 +40,24 @@ class DefinitionRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Language[] Returns an array of Language objects
+//     * @return Definition[] Returns an array of Definition objects
 //     */
 //    public function findByExampleField($value): array
 //    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
+//        return $this->createQueryBuilder('d')
+//            ->andWhere('d.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
+//            ->orderBy('d.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Language
+//    public function findOneBySomeField($value): ?Definition
 //    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
+//        return $this->createQueryBuilder('d')
+//            ->andWhere('d.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()

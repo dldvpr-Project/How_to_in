@@ -3,9 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DefinitionRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\Type;
 
 #[ORM\Entity(repositoryClass: DefinitionRepository::class)]
 class Definition
@@ -15,75 +13,38 @@ class Definition
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column, Type(Types::TEXT)]
-    private ?string $body = null;
-
-    #[ORM\ManyToOne(inversedBy: 'definitions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Language $language = null;
-
-    /**
-     * @return string|null
-     */
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string|null $title
-     */
-    public function setTitle(?string $title): void
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @return text|null
-     */
-    public function getBody(): ?string
-    {
-        return $this->body;
-    }
-
-    /**
-     * @param text|null $body
-     */
-    public function setBody(?text $body): void
-    {
-        $this->body = $body;
-    }
-
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int|null $id
-     */
-    public function setId(?int $id): void
+    public function getDescription(): ?string
     {
-        $this->id = $id;
+        return $this->description;
     }
 
-    public function getLanguage(): ?Language
+    public function setDescription(string $description): self
     {
-        return $this->language;
-    }
-
-    public function setLanguage(?Language $language): self
-    {
-        $this->language = $language;
+        $this->description = $description;
 
         return $this;
     }
 
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
 
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
 }

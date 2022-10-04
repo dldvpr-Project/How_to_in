@@ -6,8 +6,6 @@ use App\Repository\LanguageRepository;
 use App\Entity\Language;
 use App\Form\LanguageType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Service\FileUploader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,18 +13,19 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/language', name: 'language_')]
 class LanguageController extends AbstractController
 {
-    #[Route('/index', name: 'index')]
-    public function index(): Response
+    #[Route('/', name: 'index')]
+    public function index(LanguageRepository $languageRepository): Response
     {
+        $languages = $languageRepository->findAll();
         return $this->render('language/index.html.twig', [
-            'controller_name' => 'LanguageController',
+            'languages' => $languages,
         ]);
     }
 
     #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
     public function addDefinition(
         LanguageRepository $languageRepository,
-        Request              $request
+        Request            $request
     ): Response
     {
         $language = new language();
