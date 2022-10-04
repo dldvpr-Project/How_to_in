@@ -26,8 +26,7 @@ class LanguageController extends AbstractController
     #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
     public function addDefinition(
         LanguageRepository $languageRepository,
-        Request            $request,
-        FileUploader       $fileUploader
+        Request              $request
     ): Response
     {
         $language = new language();
@@ -35,19 +34,14 @@ class LanguageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $imgFile */
-            $imgFile = $form->get('picture')->getData();
-            if ($imgFile) {
-                $imgFileName = $fileUploader->upload($imgFile);
-                $language->setPicture($imgFileName);
-            }
             $languageRepository->save($language, true);
+
             return $this->redirectToRoute('app_home', [], Response::HTTP_CREATED);
         }
 
         return $this->renderForm('language/new.html.twig', [
             'form' => $form,
-            'langue' => $language
+            'language' => $language
         ]);
     }
 }
